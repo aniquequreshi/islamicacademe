@@ -1,0 +1,43 @@
+{% extends "questions/base.html" %}
+
+{% block title %}Subject Edit{% endblock %}
+
+{% block content %}
+
+    <br>
+<form method="post">
+    {% csrf_token %}
+    {{ form }}
+
+    <input type="submit" value="Submit">
+</form>
+<br>
+
+{#    <table class="table table-bordered table-sm ">#}
+        <table id="myTable" class="hover compact cell-border" data-page-length='100' style="width:100%">
+        <thead>
+        <tr>
+            <td>Subject</td>
+            <td>Action</td>
+        </tr>
+        </thead>
+        {% for subject in objects %}
+            <tr>
+                <td>{{ subject.subject }}</td>
+                <td><a href="{% url 'questions:subject-update' subject.pk %}" class="btn btn-primary btn-sm" role="button" >Rename</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+       <script>
+        $(document).ready( function () {
+            {#$('#myTable').DataTable();#}
+
+            $('#myTable').DataTable({
+                "order": [0, "asc"]  //sort order 0 based columns
+                {#"order": [[0, "desc"], [1, "asc"]]  //sort order 0 based columns#}
+            });
+        })
+    </script>
+
+{% endblock %}

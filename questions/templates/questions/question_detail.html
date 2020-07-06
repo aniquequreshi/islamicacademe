@@ -1,0 +1,24 @@
+{% extends "questions/base.html" %}
+
+{% block title %}Question Generated{% endblock %}
+
+{% block content %}
+
+
+<h3>Question Details</h3>
+<br>
+   <h5> {{ question.question_text }}</h5>
+    <ul>
+    {% for choice in all_choices %}
+        <li>{{ choice.choice }}</li>
+    {% endfor %}
+    </ul>
+
+    <h6>Correct Answer: {{ question.choice }}</h6>
+    <p>Written by: <b>{{ question.created_by }}</b></p>
+
+    {% if user.username == 'admin' %}
+        <a href="{% url 'questions:question-admin-update' question.pk %}" class="btn btn-primary btn-sm" role="button">Edit</a>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,79 @@
+        {% extends "questions/base.html" %}
+
+{% block title %}Everyone's Questions List{% endblock %}
+
+{% block content %}
+      <form method="get" id="myForm" name="myForm">
+      <table>
+          <tr>
+              <td><b>{{ filter.form.review_status.label_tag }}</b></td>
+              <td>{{ filter.form.review_status }}</td>
+          </tr>
+          <tr>
+              <td><b>{{ filter.form.created_by.label_tag }}</b></td>
+              <td>{{ filter.form.created_by }}</td>
+          </tr>
+
+
+
+{#          {{ filter.form }}#}
+          <tr>
+              <td></td>
+              <td></td>
+              <td><input type="submit" id="filter" value="Filter"></td>
+              <td>
+                  <input type="reset" id="reset" value="Reset">
+              </td>
+
+
+          </tr>
+      </table>
+      </form>
+
+
+
+    <table id="myTable" class="hover compact cell-border" data-page-length='10' style="width:100%">
+{#    <table class="table table-bordered table-sm ">#}
+    <thead>
+        <tr>
+            {% if user.username == 'admin' %}
+                <td>Action</td>
+            {% endif %}
+            <td>Question</td>
+            <td>Correct Choice</td>
+            <td>Choice Group</td>
+            <td>Created By</td>
+            <td>Modified</td>
+        </tr>
+    </thead>
+    <tbody>
+    {% for question in object_list %}
+        <tr>
+            {% if user.username == 'admin' %}
+                <td><a href="{% url 'questions:question-admin-update' question.pk %}" class="btn btn-primary btn-sm" role="button" >Edit</a></td>
+            {% endif %}
+            <td><a href="{% url 'questions:question-detail' question.pk %}">{{ question.question_text }}</a></td>
+            <td>{{ question.choice }}</td>
+            <td>{{ question.choice_group }}</td>
+            <td>{{ question.created_by }}</td>
+            <td>{{ question.last_modified }}</td>
+
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+
+    <script>
+        $(document).ready( function () {
+            {#$('#myTable').DataTable();#}
+
+            $('#myTable').DataTable({
+                "order": [5, "desc"]  //sort order 0 based columns
+                {#"order": [[0, "desc"], [1, "asc"]]  //sort order 0 based columns#}
+            });
+        })
+    </script>
+
+
+
+{% endblock %}
