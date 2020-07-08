@@ -62,12 +62,12 @@ class QuestionAdminUpdateView(LoginRequiredMixin, UpdateView):
     # fields = ('question_text', 'choice_group', 'choice', 'notes',)
     success_url = reverse_lazy('questions:question-list-next')
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
     # works if using UserPassesTestMixin
-    # def get_form_kwargs(self):
-    #     kwargs = super().get_form_kwargs()
-    #     kwargs['user'] = self.request.user
-    #     return kwargs
-    #
     # def test_func(self):
     #     if self.request.user.username == 'admin':  # Admin user id
     #         return True
