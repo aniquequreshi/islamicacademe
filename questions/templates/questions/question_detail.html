@@ -17,7 +17,7 @@
     <h6>Correct Answer: {{ question.choice }}</h6>
     <p>Written by: <b>{{ question.created_by }}</b></p>
 
-    {% if user.username == 'admin' %}
+    {% if perms.questions.can_edit_unreviewed_questions %}
         <a href="{% url 'questions:question-admin-update' question.pk %}" class="btn btn-primary btn-sm" role="button">Edit</a>
     {% endif %}
 

@@ -43,21 +43,25 @@
 
         <ul>
             <li><a href="{% url 'index' %}">Home</a></li>
-            <li><a href="{% url 'questions:choice-group-create' %}">Choice Groups</a></li>
-            <li><a href="{% url 'questions:question-create' %}">Create Question</a></li>
-            <li><a href="{% url 'questions:question-list'  %}">My Questions</a></li>
-            <li><a href="{% url 'questions:question-list-all'  %}">Everyone's Questions</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'questions:choice-group-create' %}">Choice Groups</a></li>
+                <li><a href="{% url 'questions:question-create' %}">Create Question</a></li>
+                <li><a href="{% url 'questions:question-list'  %}">My Questions</a></li>
+            {% endif %}
             {% if perms.questions.can_access_subjects %}
                 <li><a href="{% url 'questions:subject-create' %}">Subjects</a></li>
             {% endif %}
             {% if perms.questions.can_edit_unreviewed_questions %}
                 <li><a href="{% url 'questions:question-list-next'  %}">Supervisor Edits</a></li>
+                <li><a href="{% url 'questions:question-list-all'  %}">All Questions</a></li>
             {% endif %}
         </ul>
 
 
         <ul>
+            {% if user.username == 'admin' %}
             <li><a href="/admin">Admin</a> </li>
+            {% endif %}
         </ul>
      </div>
      {% endblock %}

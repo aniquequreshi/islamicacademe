@@ -41,7 +41,7 @@ class QuestionAdminForm(forms.ModelForm):
 
     class Meta:
         model = Question
-        fields = ('question_text', 'choice_group', 'choice', 'review_status', 'subject', 'level', 'notes', )
+        fields = ('question_text', 'choice_group', 'choice', 'review_status', 'notes', )
 
         widgets = {
             # 'choice': forms.RadioSelect(attrs={'style': 'display: inline-block' }),

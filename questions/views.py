@@ -4,6 +4,7 @@ from django.views.generic import CreateView, DeleteView, UpdateView, ListView, D
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from random import shuffle
 from django.contrib import messages
+from django.core.paginator import Paginator
 
 # from questions.models import Question, Choice, ChoiceGroup, Subject
 from questions.forms import QuestionForm, ChoiceForm, QuestionAdminForm
@@ -87,17 +88,22 @@ class QuestionListView(LoginRequiredMixin, ListView):
 
 class QuestionListAllView(LoginRequiredMixin, FilterView):
     model = Question
-    template_name = "questions/question_list_all.html"
+    template_name = "questions/question_filter.html"
+
+    # question_list = Question.objects.all()
+    # paginator = Paginator(question_list, 5)
 
     def get_queryset(self):
-        query_set = self.model.objects.all().order_by('created_by', 'last_modified')
+        query_set = self.model.objects.all()
+            # .order_by('last_modified')
+        #.order_by('created_by', 'last_modified')
         question_filtered_list = QuestionFilter(self.request.GET, queryset=query_set)
         return question_filtered_list.qs
 
 
-class QuestionListNextView(LoginRequiredMixin, ListView):
+class QuestionListNextView(LoginRequiredMixin, ListView): #Supervisor Edits
     model = Question
-    template_name = "questions/question_list_all.html"
+    template_name = "questions/question_filter.html"
 
     def get_queryset(self):
         question_list = Question.objects.order_by("last_modified").filter(review_status='UNREVIEWED')[:5]

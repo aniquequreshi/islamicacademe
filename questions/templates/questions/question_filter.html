@@ -36,7 +36,7 @@
 {#    <table class="table table-bordered table-sm ">#}
     <thead>
         <tr>
-            {% if user.username == 'admin' %}
+            {% if perms.questions.can_edit_unreviewed_questions %}
                 <td>Action</td>
             {% endif %}
             <td>Question</td>
@@ -49,7 +49,7 @@
     <tbody>
     {% for question in object_list %}
         <tr>
-            {% if user.username == 'admin' %}
+            {% if perms.questions.can_edit_unreviewed_questions %}
                 <td><a href="{% url 'questions:question-admin-update' question.pk %}" class="btn btn-primary btn-sm" role="button" >Edit</a></td>
             {% endif %}
             <td><a href="{% url 'questions:question-detail' question.pk %}">{{ question.question_text }}</a></td>
