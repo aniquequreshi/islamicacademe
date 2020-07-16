@@ -3,15 +3,41 @@
 {% block title %}Everyone's Questions List{% endblock %}
 
 {% block content %}
+
+{#    <form action="." method="get">#}
+{#        <select name="paginate_by" id="id_paginate_by">#}
+{#            <option>5</option>#}
+{#            <option>10</option>#}
+{#            <option>100</option>#}
+{#            <option>100000</option>#}
+{#        </select>#}
+{##}
+{#        <input type="submit">#}
+{#    </form>#}
+{#    <form action="" method="get">#}
+{#      <input type="text" name="questions" value="10">#}
+{#      <input type="submit">#}
+{#    </form>#}
+
+      <button id="btnSaveSettings" onclick="mySetCookieFunction()" >Save Settings</button>
+      <button id="btnClearSettings" onclick="myClearCookieFunction()" >Clear Settings</button>
+      <label>&paginate_by=100</label>
+
       <form method="get" id="myForm" name="myForm">
       <table>
+{#          {{ filter.form }}#}
+
           <tr>
               <td><b>{{ filter.form.review_status.label_tag }}</b></td>
               <td>{{ filter.form.review_status }}</td>
-          </tr>
-          <tr>
               <td><b>{{ filter.form.created_by.label_tag }}</b></td>
               <td>{{ filter.form.created_by }}</td>
+          </tr>
+      </table>
+      <table>
+          <tr>
+              <td><b>{{ filter.form.choice_group.label_tag }}</b></td>
+              <td>{{ filter.form.choice_group }}</td>
           </tr>
 
 
@@ -32,13 +58,13 @@
 
 
 
-    <table id="myTable" class="hover compact cell-border" data-page-length='10' style="width:100%">
-{#    <table class="table table-bordered table-sm ">#}
+{#    <table id="myTable" >#}
+        <table id="myTable" class="hover compact cell-border" data-page-length='5' style="width:100%">
     <thead>
         <tr>
-            {% if perms.questions.can_edit_unreviewed_questions %}
-                <td>Action</td>
-            {% endif %}
+{#            {% if perms.questions.can_edit_unreviewed_questions %}#}
+            <td>Action</td>
+{#            {% endif %}#}
             <td>Question</td>
             <td>Correct Choice</td>
             <td>Choice Group</td>
@@ -49,29 +75,114 @@
     <tbody>
     {% for question in object_list %}
         <tr>
-            {% if perms.questions.can_edit_unreviewed_questions %}
-                <td><a href="{% url 'questions:question-admin-update' question.pk %}" class="btn btn-primary btn-sm" role="button" >Edit</a></td>
-            {% endif %}
+{#            {% if perms.questions.can_edit_unreviewed_questions %}#}
+            <td><a href="{% url 'questions:question-admin-update' question.pk %}" class="btn btn-primary btn-sm" role="button" >Edit</a></td>
+{#            {% endif %}#}
             <td><a href="{% url 'questions:question-detail' question.pk %}">{{ question.question_text }}</a></td>
             <td>{{ question.choice }}</td>
-            <td>{{ question.choice_group }}</td>
+            <td><button id="choice_group{{ forloop.counter }}" onclick="copyChoiceGroupFunction(this.value)"  value="{{ question.choice_group_id }}">{{ question.choice_group }}</button></td>
             <td>{{ question.created_by }}</td>
-            <td>{{ question.last_modified }}</td>
-
+            <td>{{ question.created }}</td>
+{##}
         </tr>
+
     {% endfor %}
     </tbody>
     </table>
+
 
     <script>
         $(document).ready( function () {
             {#$('#myTable').DataTable();#}
 
             $('#myTable').DataTable({
-                "order": [5, "desc"]  //sort order 0 based columns
-                {#"order": [[0, "desc"], [1, "asc"]]  //sort order 0 based columns#}
+                "order": [5, "asc"]  //sort order 0 based columns
+                //"order": [[0, "desc"], [1, "asc"]]  //sort order 0 based columns
             });
+
+            $('#id_review_status').change(function () {
+                $('#filter').click();
+            })
+
+            $('#id_created_by').change(function () {
+                $('#filter').click();
+            })
+
+            $('#id_choice_group').change(function () {
+                $('#filter').click();
+            })
+
+
+            $('#reset').click(function () {
+                $('#id_review_status').prop('selectedIndex', 0);
+                $('#id_created_by').prop('selectedIndex', 0);
+                $('#id_choice_group').prop('selectedIndex', 0);
+                {#$('#id_paginate_by').prop('selectedIndex', 0);#}
+                $('#filter').click();
+            })
+
+            var a = document.createElement('a');
+            a.href = document.referrer;
+            var currentURL = (window.location.pathname);
+            var referralURL = a.pathname;
+            //alert((a.pathname))
+            if (currentURL != referralURL) {
+                $('#id_review_status').prop('selectedIndex', getCookie('review_status'));
+                $('#id_created_by').prop('selectedIndex', getCookie('created_by'));
+                $('#id_choice_group').prop('selectedIndex', getCookie('choice_group'));
+                {#$('#id_paginate_by').prop('selectedIndex', getCookie('paginate_by'));#}
+                $('#filter').click();
+            }
+
+
         })
+
+
+
+        function mySetCookieFunction(){
+            setCookie('review_status', $('#id_review_status').prop('selectedIndex'), 1);
+            setCookie('created_by', $('#id_created_by').prop('selectedIndex'), 1);
+            setCookie('choice_group', $('#id_choice_group').prop('selectedIndex'), 1);
+            {#setCookie('paginate_by', $('#id_paginate_by').prop('selectedIndex'), 1);#}
+        }
+
+        function myClearCookieFunction(){
+            setCookie('review_status', '', .0000000000000001);
+            setCookie('created_by',  '', .0000000000000001);
+            setCookie('choice_group',  '', .0000000000000001);
+            {#setCookie('paginate_by',  '', .0000000000000001);#}
+        }
+
+        function setCookie(cname, cvalue, exdays) {
+          var d = new Date();
+          d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+          var expires = "expires="+d.toUTCString();
+          document.cookie = cname + "=" + cvalue + ";" + expires ;
+        }
+
+        function getCookie(cname) {
+          var name = cname + "=";
+          var ca = document.cookie.split(';');
+          for(var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+              c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+              return c.substring(name.length, c.length);
+            }
+          }
+          return "";
+        }
+
+        function copyChoiceGroupFunction(x) {
+        //alert(x);
+            $('#id_choice_group').val(x);
+            $('#filter').click();
+        }
+
+
+
     </script>
 
 

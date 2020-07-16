@@ -52,8 +52,8 @@
                 <li><a href="{% url 'questions:subject-create' %}">Subjects</a></li>
             {% endif %}
             {% if perms.questions.can_edit_unreviewed_questions %}
-                <li><a href="{% url 'questions:question-list-next'  %}">Supervisor Edits</a></li>
-                <li><a href="{% url 'questions:question-list-all'  %}">All Questions</a></li>
+{#                <li><a href="{% url 'questions:question-list-next'  %}">Supervisor Edits</a></li>#}
+                <li><a href="{% url 'questions:question-list-all'  %}">Review Questions</a></li>
             {% endif %}
         </ul>
 

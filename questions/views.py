@@ -89,25 +89,33 @@ class QuestionListView(LoginRequiredMixin, ListView):
 class QuestionListAllView(LoginRequiredMixin, FilterView):
     model = Question
     template_name = "questions/question_filter.html"
+    paginate_by = 5
+
+    def get_paginate_by(self, queryset):
+        """
+        Paginate by specified value in querystring, or use default class property value.
+        """
+        return self.request.GET.get('paginate_by', self.paginate_by)
 
     # question_list = Question.objects.all()
     # paginator = Paginator(question_list, 5)
 
     def get_queryset(self):
-        query_set = self.model.objects.all()
+        query_set = self.model.objects.all().order_by('created')
             # .order_by('last_modified')
         #.order_by('created_by', 'last_modified')
         question_filtered_list = QuestionFilter(self.request.GET, queryset=query_set)
         return question_filtered_list.qs
 
 
-class QuestionListNextView(LoginRequiredMixin, ListView): #Supervisor Edits
-    model = Question
-    template_name = "questions/question_filter.html"
-
-    def get_queryset(self):
-        question_list = Question.objects.order_by("last_modified").filter(review_status='UNREVIEWED')[:5]
-        return question_list
+# Don't need it.  Working
+# class QuestionListNextView(LoginRequiredMixin, ListView): #Supervisor Edits
+#     model = Question
+#     template_name = "questions/question_filter.html"
+#
+#     def get_queryset(self):
+#         question_list = Question.objects.order_by("last_modified").filter(review_status='UNREVIEWED')[:5]
+#         return question_list
 
 
 # class QuestionDetailView(DetailView):

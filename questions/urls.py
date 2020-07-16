@@ -11,7 +11,7 @@ urlpatterns = [
     path('update/<int:pk>/', views.QuestionUpdateView.as_view(), name='question-update'),
     path('list/', views.QuestionListView.as_view(), name='question-list'),
     path('list/all/', views.QuestionListAllView.as_view(), name='question-list-all'),  #see everyone's questions, newest first
-    path('list/next/', views.QuestionListNextView.as_view(), name='question-list-next'),  #see everyone's oldest five questions
+    # path('list/next/', views.QuestionListNextView.as_view(), name='question-list-next'),  #see everyone's oldest five questions
     path('detail/<int:pk>/', views.QuestionDetail, name='question-detail'),
     # path('delete/<int:pk>/', views.DeleteView.as_view(), name='question-delete'),
 

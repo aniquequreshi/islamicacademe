@@ -41,13 +41,14 @@ class QuestionAdminForm(forms.ModelForm):
 
     class Meta:
         model = Question
-        fields = ('question_text', 'choice_group', 'choice', 'review_status', 'notes', )
+        fields = ('question_text', 'choice_group', 'choice', 'review_status', 'notes')
 
         widgets = {
             # 'choice': forms.RadioSelect(attrs={'style': 'display: inline-block' }),
             'notes': forms.TextInput,
             # 'feedback': forms.TextInput,
             # 'subject' : forms.MultipleChoiceField(widget = forms.CheckboxSelectMultiple()),
+            # 'created_by': forms.TextInput,
         }
 
     def __init__(self, *args, **kwargs):
