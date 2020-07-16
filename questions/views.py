@@ -61,7 +61,7 @@ class QuestionAdminUpdateView(LoginRequiredMixin, UpdateView):
     permission_required = ('can_access_subjects', 'can_edit_unreviewed_questions')
 
     # fields = ('question_text', 'choice_group', 'choice', 'notes',)
-    success_url = reverse_lazy('questions:question-list-next')
+    success_url = reverse_lazy('questions:question-list-all')
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
