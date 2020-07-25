@@ -43,6 +43,7 @@
 
         <ul>
             <li><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'questions:export_questions_csv' %}">Export</a></li>
             {% if user.is_authenticated %}
                 <li><a href="{% url 'questions:choice-group-create' %}">Choice Groups</a></li>
                 <li><a href="{% url 'questions:question-create' %}">Create Question</a></li>

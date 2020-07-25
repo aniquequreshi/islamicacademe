@@ -4,6 +4,8 @@ from django.views.generic import CreateView, DeleteView, UpdateView, ListView, D
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from random import shuffle
 from django.contrib import messages
+import csv  #for csv
+from django.http import HttpResponse #for csv
 from django.core.paginator import Paginator
 
 # from questions.models import Question, Choice, ChoiceGroup, Subject
@@ -390,3 +392,45 @@ def questionCheckAnswer(request, pk):
 #             resource.import_data(dataset, dry_run=False)  # Actually import now
 #
 #     return render(request, 'questions/choice_upload.html')
+
+# Works for CSV
+def export_questions_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="questions.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Question Text', 'Question Type', 'Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5', 'Correct Answer', 'Time in seconds'])
+
+    questionSet = Question.objects.filter(review_status='ACCEPTED')
+    for question in questionSet:
+        question_text = question.question_text
+        choice_group = question.choice_group
+        correct_choice = question.choice
+        # Below is needed to create a Queryset for combining
+        correct_choice_qs = Choice.objects.filter(choice_group=choice_group, choice=correct_choice).order_by("?")[:1]
+        wrong_choices = Choice.objects.filter(choice_group=choice_group).exclude(choice=correct_choice).order_by("?")[:4]
+        count_wrong_choices = wrong_choices.count()
+        generated_question = list(correct_choice_qs)
+        generated_question.insert(0, question_text)
+        generated_question.insert(1, 'Multiple Choice')
+        generated_question.extend(list(wrong_choices))
+        if count_wrong_choices == 1:
+            generated_question.insert(4, '')
+            generated_question.insert(5, '')
+            generated_question.insert(6, '')
+        if count_wrong_choices == 2:
+            generated_question.insert(5, '')
+            generated_question.insert(6, '')
+        if count_wrong_choices == 3:
+            generated_question.insert(6, '')
+        generated_question.insert(len(generated_question),'1')
+        generated_question.insert(len(generated_question), '60')
+
+        # all_choices_list = list(all_choices)
+
+        # shuffle(all_choices_list)
+
+        writer.writerow(generated_question)
+    return response
+
+
