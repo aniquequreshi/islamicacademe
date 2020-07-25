@@ -1,7 +1,7 @@
 from django.urls import path
 
 from . import views
-from .views import choiceCreateView, export_questions_csvg
+from .views import choiceCreateView, export_questions_csv
 
 app_name = 'questions'
 urlpatterns = [
