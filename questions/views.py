@@ -9,7 +9,7 @@ from django.http import HttpResponse #for csv
 from django.core.paginator import Paginator
 
 # from questions.models import Question, Choice, ChoiceGroup, Subject
-from questions.forms import QuestionForm, ChoiceForm, QuestionAdminForm
+from questions.forms import QuestionForm, ChoiceForm, QuestionAdminForm, QuestionSubjectForm
 from questions.resources import *
 from django.forms import inlineformset_factory
 from django_filters.views import FilterView
@@ -153,6 +153,22 @@ def load_choices(request):
     choice_group_id = request.GET.get('choice_group')
     choices = Choice.objects.filter(choice_group_id=choice_group_id)
     return render(request, 'questions/choice_dropdown_list_options.html', {'choices': choices})
+
+
+class QuestionSubjectUpdateView(LoginRequiredMixin, UpdateView):
+    model = Question
+    form_class = QuestionSubjectForm
+    permission_required = ('can_access_subjects', 'can_edit_unreviewed_questions')
+
+    # fields = ('question_text', 'choice_group', 'choice', 'notes',)
+    success_url = reverse_lazy('questions:question-list-all')
+
+    # def get_form_kwargs(self):
+    #     kwargs = super().get_form_kwargs()
+    #     kwargs['user'] = self.request.user
+    #     return kwargs
+
+
 
 
 class ChoiceGroupCreateView(LoginRequiredMixin, CreateView):
@@ -394,7 +410,7 @@ def questionCheckAnswer(request, pk):
 #     return render(request, 'questions/choice_upload.html')
 
 # Works for CSV
-def export_questions_csv(request):
+def questionExportCSV(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="questions.csv"'
 
@@ -432,5 +448,4 @@ def export_questions_csv(request):
 
         writer.writerow(generated_question)
     return response
-
 

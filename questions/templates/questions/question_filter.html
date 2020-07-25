@@ -77,6 +77,7 @@
         <tr>
 {#            {% if perms.questions.can_edit_unreviewed_questions %}#}
             <td><a href="{% url 'questions:question-admin-update' question.pk %}" class="btn btn-primary btn-sm" role="button" >Edit</a></td>
+            <td><a href="{% url 'questions:question-subject-update' question.pk %}" class="btn btn-primary btn-sm" role="button" >Subject</a></td>
 {#            {% endif %}#}
             <td><a href="{% url 'questions:question-detail' question.pk %}">{{ question.question_text }}</a></td>
             <td>{{ question.choice }}</td>

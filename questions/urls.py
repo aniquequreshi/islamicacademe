@@ -1,7 +1,7 @@
 from django.urls import path
 
 from . import views
-from .views import choiceCreateView, export_questions_csv
+from .views import choiceCreateView, questionExportCSV
 
 app_name = 'questions'
 urlpatterns = [
@@ -42,6 +42,6 @@ urlpatterns = [
     # path('answer/display/', views.questionAnswerDisplay, name='question-answer-display'),
     # path('choice/upload/', views.choiceUpload, name='choice-upload'),
 
-    path('download/csv', views.export_questions_csv, name='export_questions_csv'),
-    #path('download/xls', views.export_questions_xls, name='export_questions_xls'),
+    path('download/csv', views.questionExportCSV, name='question-export-csv'),
+    path('question/subject/update/<int:pk>/', views.QuestionSubjectUpdateView.as_view(), name='question-subject-update'),
 ]

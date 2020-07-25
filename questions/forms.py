@@ -78,3 +78,7 @@ class ChoiceForm(forms.ModelForm):
         'choice': forms.TextInput,
     }
 
+class QuestionSubjectForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = ('question_text', 'subject')
