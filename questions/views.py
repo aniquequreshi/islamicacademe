@@ -9,7 +9,7 @@ from django.http import HttpResponse #for csv
 from django.core.paginator import Paginator
 
 # from questions.models import Question, Choice, ChoiceGroup, Subject
-from questions.forms import QuestionForm, ChoiceForm, QuestionAdminForm, QuestionSubjectForm
+from questions.forms import QuestionForm, ChoiceForm, QuestionAdminForm
 from questions.resources import *
 from django.forms import inlineformset_factory
 from django_filters.views import FilterView
@@ -60,7 +60,7 @@ class QuestionUpdateView(UserPassesTestMixin, UpdateView):
 class QuestionAdminUpdateView(LoginRequiredMixin, UpdateView):
     model = Question
     form_class = QuestionAdminForm
-    permission_required = ('can_access_subjects', 'can_edit_unreviewed_questions')
+    permission_required = ('can_edit_unreviewed_questions')
 
     # fields = ('question_text', 'choice_group', 'choice', 'notes',)
     success_url = reverse_lazy('questions:question-list-all')
@@ -155,21 +155,6 @@ def load_choices(request):
     return render(request, 'questions/choice_dropdown_list_options.html', {'choices': choices})
 
 
-class QuestionSubjectUpdateView(LoginRequiredMixin, UpdateView):
-    model = Question
-    form_class = QuestionSubjectForm
-    permission_required = ('can_access_subjects', 'can_edit_unreviewed_questions')
-
-    # fields = ('question_text', 'choice_group', 'choice', 'notes',)
-    success_url = reverse_lazy('questions:question-list-all')
-
-    # def get_form_kwargs(self):
-    #     kwargs = super().get_form_kwargs()
-    #     kwargs['user'] = self.request.user
-    #     return kwargs
-
-
-
 
 class ChoiceGroupCreateView(LoginRequiredMixin, CreateView):
     model = ChoiceGroup
@@ -199,72 +184,6 @@ class ChoiceGroupUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('questions:choice-group-create')
 
 
-class SubjectCreateView(LoginRequiredMixin, CreateView):
-    model = Subject
-    # form_class = ChoiceGroupForm
-    fields = '__all__'
-    # success_url = 'questions:index'
-    success_url = reverse_lazy('questions:subject-create')
-    permission_required = ('can_access_subjects')
-
-    # form = QuestionForm
-
-    # def form_valid(self, form):
-    #     form.instance.created_by = self.request.user
-    #     return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        if self.request.user.username == "admin":
-            context["objects"] = self.model.objects.all().order_by('subject')
-        else:
-            context["objects"] = self.model.objects.none()
-        return context
-
-
-class SubjectUpdateView(LoginRequiredMixin, UpdateView):
-    model = Subject
-    fields = ('subject',)
-    success_url = reverse_lazy('questions:subject-create')
-    permission_required = 'can_access_subjects'
-
-
-# Works but don't need it
-# class ChoiceGroupListView(LoginRequiredMixin, ListView):
-#     model = ChoiceGroup
-#     # permission_required = ('kidsapp.view_denial')
-#     def get_queryset(self):
-#         user = self.request.user
-#         choice_group_list = ChoiceGroup.objects.filter(created_by=user)
-#         return choice_group_list
-
-
-# class ChoiceGroupDetailView(LoginRequiredMixin, DetailView):
-#     model = ChoiceGroup
-
-
-# class ChoiceGroupDeleteView(LoginRequiredMixin, DeleteView):
-#     model = ChoiceGroup
-#     success_url = reverse_lazy('author-list')
-#
-#     def get_queryset(self):
-#         user = self.request.user
-#         choice_group_list = ChoiceGroup.objects.filter(created_by=user)
-#         return choice_group_list
-
-
-# class ChoiceCreateView(LoginRequiredMixin, CreateView):
-#     model = Choice
-#     # form_class = ChoiceGroupForm
-#     fields = '__all__'
-#     # success_url = 'questions:index'
-#     success_url = reverse_lazy('questions:choice-list')
-#
-#     # form = QuestionForm
-#
-#     def form_valid(self, form):
-#         form.instance.created_by = self.request.user
-#         return super().form_valid(form)
 
 def choiceCreateView(request, pk):
     # form = ChoiceForm

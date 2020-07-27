@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.forms.widgets import CheckboxSelectMultiple
 
-from .models import Question, Choice, ChoiceGroup, Subject
+from .models import Question, Choice, ChoiceGroup
 
 
 class QuestionForm(forms.ModelForm):
@@ -78,7 +78,3 @@ class ChoiceForm(forms.ModelForm):
         'choice': forms.TextInput,
     }
 
-class QuestionSubjectForm(forms.ModelForm):
-    class Meta:
-        model = Question
-        fields = ('question_text', 'subject')

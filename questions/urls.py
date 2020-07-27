@@ -29,8 +29,8 @@ urlpatterns = [
     # path('choice/detail/<int:pk>/', views.ChoiceDetailView.as_view(), name='choice-detail'),
     # path('choice/delete/<int:pk>/', views.ChoiceDeleteView.as_view(), name='choice-delete'),
 
-    path('subject/create/', views.SubjectCreateView.as_view(), name='subject-create'),
-    path('subject/update/<int:pk>/', views.SubjectUpdateView.as_view(), name='subject-update'),
+    #path('subject/create/', views.SubjectCreateView.as_view(), name='subject-create'),
+    #path('subject/update/<int:pk>/', views.SubjectUpdateView.as_view(), name='subject-update'),
 
     path('copy/<int:pk>/', views.QuestionCopy, name='question-copy'),
     path('generate/<int:pk>/', views.QuestionGenerate, name='question-generate'),
@@ -43,5 +43,5 @@ urlpatterns = [
     # path('choice/upload/', views.choiceUpload, name='choice-upload'),
 
     path('download/csv', views.questionExportCSV, name='question-export-csv'),
-    path('question/subject/update/<int:pk>/', views.QuestionSubjectUpdateView.as_view(), name='question-subject-update'),
+    #path('question/subject/update/<int:pk>/', views.QuestionSubjectUpdateView.as_view(), name='question-subject-update'),
 ]

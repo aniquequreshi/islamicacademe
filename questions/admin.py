@@ -5,11 +5,11 @@ from django.contrib.auth.admin import UserAdmin as BaseAdmin
 from django.contrib.auth.models import User
 
 # Register your models here.
-from .models import Question, Subject, Level, ChoiceGroup, Choice
+from .models import Question, ChoiceGroup, Choice
 
 # admin.site.register(Question)
 # admin.site.register(Subject)
-admin.site.register(Level)
+# admin.site.register(Level)
 
 
 # admin.site.register(ChoiceGroup)
@@ -35,10 +35,10 @@ class QuestionAdmin(ImportExportModelAdmin):
         pass
 
 
-@admin.register(Subject)
-class QuestionAdmin(ImportExportModelAdmin):
-    class Meta:
-        pass
+# @admin.register(Subject)
+# class QuestionAdmin(ImportExportModelAdmin):
+#     class Meta:
+#         pass
 
 
 admin.site.unregister(User)

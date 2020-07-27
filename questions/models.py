@@ -39,29 +39,29 @@ class Choice(models.Model):
         return self.choice
 
 
-class Subject(models.Model):
-    subject = models.CharField(max_length=100)
-
-    class Meta:
-        ordering = ['subject']
-        permissions = (
-                ('can_access_subjects', 'Can Access Subjects'),
-        )
-
-    def __str__(self):
-        return self.subject
-
-
-class Level(models.Model):
-    level = models.CharField(max_length=2)
-    display_order = models.IntegerField(default=0)
-
-    class Meta:
-        ordering = ['display_order']
-
-    def __str__(self):
-        return self.level
-
+# class Subject(models.Model):
+#     subject = models.CharField(max_length=100)
+#
+#     class Meta:
+#         ordering = ['subject']
+#         permissions = (
+#                 ('can_access_subjects', 'Can Access Subjects'),
+#         )
+#
+#     def __str__(self):
+#         return self.subject
+#
+#
+# class Level(models.Model):
+#     level = models.CharField(max_length=2)
+#     display_order = models.IntegerField(default=0)
+#
+#     class Meta:
+#         ordering = ['display_order']
+#
+#     def __str__(self):
+#         return self.level
+#
 
 class Question(models.Model):
     question_text = models.TextField(verbose_name='Question')
@@ -69,8 +69,8 @@ class Question(models.Model):
     choice = models.ForeignKey('Choice', on_delete=models.PROTECT, verbose_name='Correct Answer')
     notes = models.TextField(null=True, blank=True)
     feedback = models.TextField(null=True, blank=True)
-    subject = models.ManyToManyField(Subject, default='Uncategorized')
-    level = models.ManyToManyField(Level, default='0')
+    # subject = models.ManyToManyField(Subject, default='Uncategorized')
+    # level = models.ManyToManyField(Level, default='0')
 
     UNREVIEWED = 'UNREVIEWED'
     PENDING = 'PENDING'
