@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 # from django.contrib import admin
 from django.urls import reverse
+from taggit.managers import TaggableManager
 # from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
@@ -68,6 +69,7 @@ class Question(models.Model):
     choice_group = models.ForeignKey('ChoiceGroup', on_delete=models.PROTECT, verbose_name='Choice Group')
     choice = models.ForeignKey('Choice', on_delete=models.PROTECT, verbose_name='Correct Answer')
     notes = models.TextField(null=True, blank=True)
+    tags = TaggableManager()
     feedback = models.TextField(null=True, blank=True)
     # subject = models.ManyToManyField(Subject, default='Uncategorized')
     # level = models.ManyToManyField(Level, default='0')
