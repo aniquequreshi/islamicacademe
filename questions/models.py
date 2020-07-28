@@ -69,7 +69,7 @@ class Question(models.Model):
     choice_group = models.ForeignKey('ChoiceGroup', on_delete=models.PROTECT, verbose_name='Choice Group')
     choice = models.ForeignKey('Choice', on_delete=models.PROTECT, verbose_name='Correct Answer')
     notes = models.TextField(null=True, blank=True)
-    tags = TaggableManager()
+    # tags = TaggableManager()
     feedback = models.TextField(null=True, blank=True)
     # subject = models.ManyToManyField(Subject, default='Uncategorized')
     # level = models.ManyToManyField(Level, default='0')
