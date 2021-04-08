@@ -3,7 +3,7 @@ certifi==2020.6.20
 chardet==3.0.4
 defusedxml==0.6.0
 diff-match-patch==20181111
-Django==3.0.8
+Django==3.0.14
 django-anymail==7.1.0
 django-filter==2.3.0
 django-import-export==2.2.0
